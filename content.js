@@ -25,6 +25,12 @@ $(document).on("ready", function () {
                 item["game"] = addy.substr(0, addy.indexOf('-')).trim();
                 item["team1"] = $(this).find(".team1").text().trim();
                 item["team2"] = $(this).find(".team2").text().trim();
+
+                if(item["team1"].length == 0 || item["team2"].length == 0){
+                    item["team1"] = $(this).find(".bet-event.title-tooltip.show").text().trim();
+                    item["team2"] = $(this).find(".bet-event.title-tooltip.show").text().trim();
+                }
+
                 item["marcket"] = gameinfor[1].trim();
                 item["place"] = $(this).find(".selection.title-tooltip").text().trim();
                 item["odds"] = $(this).find(".odds").text().trim();
@@ -47,6 +53,12 @@ $(document).on("ready", function () {
                 item["game"] = addy.substr(0, addy.indexOf('-')).trim();
                 item["team1"] = $(this).find(".team1").text().trim();
                 item["team2"] = $(this).find(".team2").text().trim();
+
+                if(item["team1"].length == 0 || item["team2"].length == 0){
+                    item["team1"] = $(this).find(".bet-event.title-tooltip.show").text().trim();
+                    item["team2"] = $(this).find(".bet-event.title-tooltip.show").text().trim();
+                }
+
                 item["marcket"] = gameinfor[1].trim();
                 item["place"] = $(this).find(".selection.title-tooltip").text().trim();
                 item["odds"] = $(this).find(".odds").text().trim();
@@ -57,51 +69,83 @@ $(document).on("ready", function () {
                 senddata.push(item);
             })
         }
-
         if (site.search("sports411.ag") != -1) {
-            $(".d-flex.justify-content-around.ng-star-inserted.selected, .d-flex.justify-content-around.align-internal-elements.ng-star-inserted.selected").each(function () {
+            $(".d-flex.justify-content-around.ng-star-inserted.selected, .d-flex.justify-content-around.align-internal-elements.ng-star-inserted.selected, .d-flex.justify-content-between.ng-star-inserted.selected").each(function () {
                 var betinfor = $(this).find("input");
                 var betid = betinfor.attr("id");
                 var leagueid = betinfor.attr("idleague");
                 var odds = betinfor.attr("odds");
                 var idgame = betinfor.attr("idgame");
-                var marcket;
+                var marcket, team1, team2, match, stake,wins,place, gamedate;
+                
+                if(leagueid == 0){
+                    team1 = $(this).closest("app-schedule-game-american").find(".sports-league-description.tnt.ng-star-inserted").first().text().trim();
+                    team2 = team1;
+                    place = betinfor.attr("team").trim();
+                    match = $(this).closest("app-schedule-dategroup").find(".sports-league-banner.ng-star-inserted").find("a").text().trim();
+                    
+                    if ($(this).closest("app-schedule-game-american").find(".sports-league-description.tnt.ng-star-inserted").length == 1 )
+                        marcket = team1;
+                    else
+                    marcket = $(this).closest("app-schedule-game-american").find(".sports-league-description.tnt.ng-star-inserted").first().next().text().trim();
 
-                if (betinfor.attr("linetype") === "odds")
-                    marcket = "money line";
+                    var tempdate = match.split("-");
+                    var tmp1 = tempdate[tempdate.length-1].trim();
+                    var tmp2= tmp1.split(" ");
+                    var months = {"JAN":"01", "FEV":"02", "MAR":"03", "APR":"04", "MAY":"05", "JUN":"06", "JUL":"07", "AUG":"08", "SEP":"09","OCT":"10" ,"NOV":"11", "DEC":"12"};
+                    var month;
+
+                    var d = new Date();
+                    n = d.getMonth() + 1;
+                    y = d.getFullYear();
+
+                    for( let key in months ) {
+                        if(key == tmp2[0].trim())
+                            month = months[key];
+                      }
+                    
+                    if(parseInt(month) < n)
+                      y = y + 1;
+
+                    gamedate = y.toString() + "-" + month + "-" + tmp2[1].trim();
+                }
                 else
-                    marcket = betinfor.attr("linetype");
+                {
+                    if (betinfor.attr("linetype") === "odds")
+                        marcket = "money line";
+                    else
+                        marcket = betinfor.attr("linetype");
 
-                var currentYear = (new Date).getFullYear();
-                var gameinfor = $(`[idgame = ${idgame}]`);
-                var team1 = gameinfor.find(".visitor").text().trim();
-                var team2 = gameinfor.find(".home").text().trim();
+                    var currentYear = (new Date).getFullYear();
+                    var gameinfor = $(`[idgame = ${idgame}]`);
+                    team1 = gameinfor.find(".visitor").text().trim();
+                    team2 = gameinfor.find(".home").text().trim();
 
-                var gameday = gameinfor.find(".ng-star-inserted:first").text();
-                var gamedate;
+                    var gameday = gameinfor.find(".ng-star-inserted:first").text();
 
-                if (gameday.search("LIVE") != -1) {
-                    var mm = (new Date).getMonth() + 1; // getMonth() is zero-based
-                    var dd = (new Date).getDate();
+                    if (gameday.search("LIVE") != -1) {
+                        var mm = (new Date).getMonth() + 1; // getMonth() is zero-based
+                        var dd = (new Date).getDate();
 
-                    gamedate = [(new Date).getFullYear(), "-",
-                    (mm > 9 ? '' : '0') + mm, "-",
-                    (dd > 9 ? '' : '0') + dd
-                    ].join('');
+                        gamedate = [(new Date).getFullYear(), "-",
+                        (mm > 9 ? '' : '0') + mm, "-",
+                        (dd > 9 ? '' : '0') + dd
+                        ].join('');
+                    }
+                    else {
+                        var daydata = gameday.split("/");
+                        gamedate = `${currentYear}-${daydata[0]}-${daydata[1]}`;
+                        gamedate = gamedate.slice(0, 8).trim();
+                    }
+
+                    var leagueinfor = $(`[id = league_${leagueid}]`).closest("[data-parent = #leagues]").attr("id");
+                    match = $(`[aria-controls = ${leagueinfor}]`).attr("cat").trim();
+
+                    place = $(`#risk_${betid}`).closest(".bet-content.row.no-gutters.ng-star-inserted").find(".team-name").text().trim();
                 }
-                else {
-                    var daydata = gameday.split("/");
-                    gamedate = `${currentYear}-${daydata[0]}-${daydata[1]}`;
-                    gamedate = gamedate.slice(0, 8).trim();
-                }
 
-                var leagueinfor = $(`[id = league_${leagueid}]`).closest("[data-parent = #leagues]").attr("id");
-                var match = $(`[aria-controls = ${leagueinfor}]`).attr("cat").trim();
-
-                var stake = $(`#risk_${betid}`).val().trim();
-                var wins = $(`#win_${betid}`).val().trim();
-
-                var place = $(`#risk_${betid}`).closest(".bet-content.row.no-gutters.ng-star-inserted").find(".team-name").text().trim();
+                stake = $(`#risk_${betid}`).val().trim();
+                wins = $(`#win_${betid}`).val().trim();
 
                 item = {};
                 item["gamedate"] = gamedate;
