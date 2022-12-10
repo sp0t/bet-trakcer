@@ -135,7 +135,7 @@ $(document).on("ready", function () {
                     else {
                         var daydata = gameday.split("/");
                         gamedate = `${currentYear}-${daydata[0]}-${daydata[1]}`;
-                        gamedate = gamedate.slice(0, 8).trim();
+                        gamedate = gamedate.slice(0, 10).trim();
                     }
 
                     var leagueinfor = $(`[id = league_${leagueid}]`).closest("[data-parent = #leagues]").attr("id");
@@ -173,16 +173,33 @@ $(document).on("ready", function () {
     else
         buttonclass = "#####"
 
-    $(document).on('click', `${buttonclass}`, function (event) {
-        $.ajax({
-            type: 'POST',
-            url: "https://betmlb.me/betting",
-            data: JSON.stringify(senddata),
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function(data){
-            },
-        })
+    $(document).on('mouseover', `${buttonclass}`, function (event) {
+
+        if(buttonclass == ".okBtn"){
+            if($(this).closest(".AlertComponent.undefined.confirm-alert").attr("class") != null)
+                {
+                    $.ajax({
+                        type: 'POST',
+                        url: "https://betmlb.me/betting",
+                        data: JSON.stringify(senddata),
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        success: function(data){
+                        },
+                    })
+                }
+            }
+        else{
+            $.ajax({
+                type: 'POST',
+                url: "https://betmlb.me/betting",
+                data: JSON.stringify(senddata),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function(data){
+                },
+            })
+        }   
     });
 });
 
