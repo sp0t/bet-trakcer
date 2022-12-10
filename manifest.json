@@ -1,0 +1,49 @@
+{
+    "name": "BetTracker 1.0",
+    "description": "Get Betting state from Betting Website.",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+
+    "declarativeNetRequestWithHostAccess" : {
+        "rule_resources" : [
+            {
+                "id": "ruleset",
+                "enabled": true,
+                "path": "rule.json"
+            }
+        ]
+    },
+
+    "permisions":[
+        "https://*/"
+    ], 
+
+    "host_permissions": [
+        "https://*/"
+    ],
+
+    "content_scripts":[
+        {
+            "matches": ["https://www.ps3838.com/*",
+                        "https://www.bet487.org/*",
+                        "https://be.sports411.ag/*"
+                    ],
+            "js":[
+                "/js/external/jquery.js",
+                "content.js"
+                ]
+        }
+    ],
+    "action":{
+         "default_popup": "main.html"
+    },
+    "icons":{
+        "16": "/icons/16.png",
+        "48": "/icons/48.png",
+        "128": "/icons/128.png",
+        "256": "/icons/256.png"
+    }
+}
