@@ -23,12 +23,18 @@ $(document).on("ready", function () {
                 item["gamedate"] = gameinfor[0].trim();
                 addy = $("#oddspage").find(".title").text().trim();
                 item["game"] = addy.substr(0, addy.indexOf('-')).trim();
+
                 item["team1"] = $(this).find(".team1").text().trim();
                 item["team2"] = $(this).find(".team2").text().trim();
 
                 if(item["team1"].length == 0 || item["team2"].length == 0){
-                    item["team1"] = $(this).find(".bet-event.title-tooltip.show").text().trim();
-                    item["team2"] = $(this).find(".bet-event.title-tooltip.show").text().trim();
+                    item["team1"] = $(this).find(".bet-event.title-tooltip").text().trim();
+                    item["team2"] = $(this).find(".bet-event.title-tooltip").text().trim();
+                }
+
+                if(item["team1"].length == 0 || item["team2"].length == 0){
+                    item["team1"] = $(this).find(".special-name").text().trim();
+                    item["team2"] = $(this).find(".special-name").text().trim();
                 }
 
                 item["marcket"] = gameinfor[1].trim();
@@ -55,8 +61,8 @@ $(document).on("ready", function () {
                 item["team2"] = $(this).find(".team2").text().trim();
 
                 if(item["team1"].length == 0 || item["team2"].length == 0){
-                    item["team1"] = $(this).find(".bet-event.title-tooltip.show").text().trim();
-                    item["team2"] = $(this).find(".bet-event.title-tooltip.show").text().trim();
+                    item["team1"] = $(this).find(".bet-event.title-tooltip").text().trim();
+                    item["team2"] = $(this).find(".bet-event.title-tooltip").text().trim();
                 }
 
                 item["marcket"] = gameinfor[1].trim();
@@ -173,8 +179,9 @@ $(document).on("ready", function () {
     else
         buttonclass = "#####"
 
-    $(document).on('mouseover', `${buttonclass}`, function (event) {
+    $(document).on('click', `${buttonclass}`, function (event) {
 
+        // alert(JSON.stringify(senddata))
         if(buttonclass == ".okBtn"){
             if($(this).closest(".AlertComponent.undefined.confirm-alert").attr("class") != null)
                 {
