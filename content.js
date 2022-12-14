@@ -37,7 +37,7 @@ $(document).on("ready", function () {
                     item["team2"] = $(this).find(".special-name").text().trim();
                 }
 
-                item["marcket"] = gameinfor[1].trim();
+                item["market"] = gameinfor[1].trim();
                 item["place"] = $(this).find(".selection.title-tooltip").text().trim();
                 item["odds"] = $(this).find(".odds").text().trim();
                 item["stake"] = $(this).find(".input-stake.stake.risk").val().trim();
@@ -65,7 +65,7 @@ $(document).on("ready", function () {
                     item["team2"] = $(this).find(".bet-event.title-tooltip").text().trim();
                 }
 
-                item["marcket"] = gameinfor[1].trim();
+                item["market"] = gameinfor[1].trim();
                 item["place"] = $(this).find(".selection.title-tooltip").text().trim();
                 item["odds"] = $(this).find(".odds").text().trim();
                 item["stake"] = $(this).find(".input-stake.stake.risk").val().trim();
@@ -82,7 +82,7 @@ $(document).on("ready", function () {
                 var leagueid = betinfor.attr("idleague");
                 var odds = betinfor.attr("odds");
                 var idgame = betinfor.attr("idgame");
-                var marcket, team1, team2, match, stake,wins,place, gamedate;
+                var macket, team1, team2, match, stake,wins,place, gamedate;
                 
                 if(leagueid == 0){
                     team1 = $(this).closest("app-schedule-game-american").find(".sports-league-description.tnt.ng-star-inserted").first().text().trim();
@@ -91,9 +91,9 @@ $(document).on("ready", function () {
                     match = $(this).closest("app-schedule-dategroup").find(".sports-league-banner.ng-star-inserted").find("a").text().trim();
                     
                     if ($(this).closest("app-schedule-game-american").find(".sports-league-description.tnt.ng-star-inserted").length == 1 )
-                        marcket = team1;
+                       market = team1;
                     else
-                    marcket = $(this).closest("app-schedule-game-american").find(".sports-league-description.tnt.ng-star-inserted").first().next().text().trim();
+                       market = $(this).closest("app-schedule-game-american").find(".sports-league-description.tnt.ng-star-inserted").first().next().text().trim();
 
                     var tempdate = match.split("-");
                     var tmp1 = tempdate[tempdate.length-1].trim();
@@ -118,9 +118,9 @@ $(document).on("ready", function () {
                 else
                 {
                     if (betinfor.attr("linetype") === "odds")
-                        marcket = "money line";
+                        market = "money line";
                     else
-                        marcket = betinfor.attr("linetype");
+                        market = betinfor.attr("linetype");
 
                     var currentYear = (new Date).getFullYear();
                     var gameinfor = $(`[idgame = ${idgame}]`);
@@ -158,7 +158,7 @@ $(document).on("ready", function () {
                 item["game"] = match;
                 item["team1"] = team1;
                 item["team2"] = team2;
-                item["marcket"] = marcket;
+                item["market"] = market;
                 item["place"] = place;
                 item["odds"] = odds;
                 item["stake"] = stake;
@@ -180,11 +180,10 @@ $(document).on("ready", function () {
         buttonclass = "#####"
 
     $(document).on('click', `${buttonclass}`, function (event) {
-
-        // alert(JSON.stringify(senddata))
         if(buttonclass == ".okBtn"){
             if($(this).closest(".AlertComponent.undefined.confirm-alert").attr("class") != null)
                 {
+                    // alert(JSON.stringify(senddata))
                     $.ajax({
                         type: 'POST',
                         url: "https://betmlb.me/betting",
@@ -197,6 +196,7 @@ $(document).on("ready", function () {
                 }
             }
         else{
+            // alert(JSON.stringify(senddata))
             $.ajax({
                 type: 'POST',
                 url: "https://betmlb.me/betting",
