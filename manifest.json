@@ -1,25 +1,11 @@
 {
-    "name": "BetTracker",
-    "description": "Get Betting state from Betting Website.",
+    "name": "BetMLB-tracker",
+    "description": "Get baseball betting state from betting Website.",
     "version": "1.0",
     "manifest_version": 3,
     "background": {
         "service_worker": "background.js"
     },
-
-    "declarativeNetRequestWithHostAccess" : {
-        "rule_resources" : [
-            {
-                "id": "ruleset",
-                "enabled": true,
-                "path": "rule.json"
-            }
-        ]
-    },
-
-    "permisions":[
-        "https://*/"
-    ], 
 
     "host_permissions": [
         "https://*/"

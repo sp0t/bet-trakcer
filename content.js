@@ -32,11 +32,6 @@ $(document).on("ready", function () {
                     item["team2"] = $(this).find(".bet-event.title-tooltip").text().trim();
                 }
 
-                if(item["team1"].length == 0 || item["team2"].length == 0){
-                    item["team1"] = $(this).find(".special-name").text().trim();
-                    item["team2"] = $(this).find(".special-name").text().trim();
-                }
-
                 item["market"] = gameinfor[1].trim();
                 item["place"] = $(this).find(".selection.title-tooltip").text().trim();
                 item["odds"] = $(this).find(".odds").text().trim();
@@ -181,22 +176,23 @@ $(document).on("ready", function () {
 
     $(document).on('click', `${buttonclass}`, function (event) {
         if(buttonclass == ".okBtn"){
-            if($(this).closest(".AlertComponent.undefined.confirm-alert").attr("class") != null)
-                {
-                    // alert(JSON.stringify(senddata))
-                    $.ajax({
-                        type: 'POST',
-                        url: "https://betmlb.me/betting",
-                        data: JSON.stringify(senddata),
-                        contentType: 'application/json',
-                        dataType: 'json',
-                        success: function(data){
-                        },
-                    })
+            if($(this).closest(".AlertComponent.confirm-alert").attr("class") != null)
+            {
+                    if($(this).siblings().attr("class") == "cancelBtn"){
+                        // alert(JSON.stringify(senddata))
+                            $.ajax({
+                            type: 'POST',
+                            url: "https://betmlb.me/betting",
+                            data: JSON.stringify(senddata),
+                            contentType: 'application/json',
+                            dataType: 'json',
+                            success: function(data){
+                            },
+                        })
+                    }         
                 }
             }
         else{
-            // alert(JSON.stringify(senddata))
             $.ajax({
                 type: 'POST',
                 url: "https://betmlb.me/betting",
